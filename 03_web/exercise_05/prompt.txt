@@ -1,0 +1,1 @@
+Provide me a burpsuite custom extension in python. I have a burpsuite community edition. This extension scans HTTP responses for common API key patterns (e.g., AWS keys, Google API keys, etc.)
