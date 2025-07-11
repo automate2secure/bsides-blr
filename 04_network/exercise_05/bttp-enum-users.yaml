@@ -1,0 +1,37 @@
+id: bttp-enum-users
+
+# Command to run this template: nuclei -t ./bttp-enum-users.yaml -target 13.232.135.193:13375
+
+info:
+  name: BSides Text Transfer Protocol (BTTP) User Enumeration
+  author: Rahul Binjve (@c0dist)
+  severity: info
+  description: Enumerates users from BSides Text Transfer Protocol by sending the list_users command.
+  tags: bsides,enum,user,tcp
+
+tcp:
+  - host:
+      - "{{Hostname}}"
+    port: 13375
+
+    inputs:
+      # Lets define the data to send.
+      - data: "#bsides# list_users #end#"
+        read: 512
+
+    matchers:
+      - type: word
+        part: raw
+        words:
+          - "#bsides# "
+          - " #end#"
+        condition: and
+
+    extractors:
+      - type: regex
+        part: raw
+        name: "raw_input"
+        group: 1
+        regex:
+          - "#bsides# ([a-zA-Z0-9_, ]+) #end#"
+  
